@@ -6,6 +6,7 @@
     <div class="top-bar">
       <div class="title-ctr">{{title}}</div>
     </div>
+    <div v-if="isLevel" class="level-counter">{{levelString}}</div>
   </div>
 </template>
 
@@ -13,7 +14,9 @@
 export default {
   name: 'TopBar',
   props: {
-    title: String
+    title: String,
+    isLevel: Boolean,
+    levelString: String
   },
   methods: {
     navigate() {
@@ -40,7 +43,6 @@ export default {
   width: 7%;
   height: 100%;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: 2rem;
@@ -60,6 +62,19 @@ export default {
   color: white;
   font-weight: 700;
   font-size: 2rem;
+}
+
+.level-counter {
+  position: absolute;
+  right: 0;
+  height: 100%;
+  width: 80px;
+  background-color: #be5e35;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.5rem;
 }
 
 </style>
