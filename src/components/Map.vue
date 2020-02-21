@@ -18,8 +18,6 @@
 </template>
 
 <script>
-// import * as d3 from 'd3'
-
 export default {
   name: 'Map',
   props: {
@@ -35,12 +33,8 @@ export default {
     paths: function() {
       return {}
     },
-    semaphores: {
-      cache: false,
-      get: function() {
-        console.log(this.mapData.semaphores)
-        return this.mapData.semaphores
-      }
+    semaphores: function() {
+      return this.mapData.semaphores
     }
   },
   created() {
@@ -64,24 +58,14 @@ export default {
 }
 
 .semaphore {
-  transition: all 0.5s;
+  transition: all 1s;
   /* transform: all 1s; */
-  stroke: red;
-  stroke-width: 3
+  stroke: black;
+  stroke-width: 2
 }
 
 .semaphore:hover {
-  stroke-width: 6
+  stroke-width: 4
 }
-
-/* .semaphore-enter-active, .semaphore-leave-active {
-
-  stroke-width: 20;
-  stroke: green
-} */
-/* .semaphore-enter, .semaphore-leave-to {
-  stroke-width: 10;
-  stroke: purple
-} */
 
 </style>

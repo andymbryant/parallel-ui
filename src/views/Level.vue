@@ -1,10 +1,7 @@
 <template>
   <div class="level-ctr">
     <TopBar title="Intro to Parallel" :isLevel="true" :levelString="levelString" />
-    <div class="buttons">
-      <button class="btn add-element" @click="takeAction()">Add Element</button>
-      <button class="btn update-element" @click="takeAction()">Update Element</button>
-    </div>
+    <div class="btn add-element" @click="run()">Run</div>
     <Map :mapData="mapData" />
   </div>
 </template>
@@ -35,13 +32,31 @@ export default {
     }
   },
   methods: {
+    async run() {
+      let me = this
+      console.log('Generating actions')
+      let actions = []
+      for (let i=0; i < 10; i++) {
+        const action = this.generateAction()
+        actions.push(action)
+      }
+
+      for (let j=0; j<actions.length; j++) {
+        setTimeout( function timer() {
+        console.log(`running action ${j + 0}`)
+          me.takeAction(actions[j])
+        }, j*1000 );
+      }
+    },
     generateAction() {
       const target = {
         category: "semaphores",
         id: "s1"
       }
+      const colors = ['red', 'green', 'blue', 'yellow', 'purple', 'pink', 'orange', 'cyan']
       const xVal = Math.floor(Math.random() * 600) + 100;
       const yVal = Math.floor(Math.random() * 600) + 100;
+      const index = Math.floor(Math.random() * colors.length) + 0;
       const mutations = [
         {
           key: "id",
@@ -61,15 +76,12 @@ export default {
         },
         {
           key: "color",
-          value: "indianred"
+          value: colors[index]
         }
       ]
       return new Action(target, mutations)
     },
     takeAction(action) {
-      if (!action) {
-        action = this.generateAction()
-      }
       const {category, id} = action.target
       action.mutations.forEach(mutation => {
         const {key, value} = mutation
@@ -78,6 +90,9 @@ export default {
         }
         Vue.set(this.mapData[category][id], key, value)
       })
+    },
+    sleep(ms) {
+      return new Promise((resolve) => setTimeout(resolve, ms))
     }
   },
   created() {
@@ -98,16 +113,19 @@ export default {
   background-size: cover;
 }
 
-.buttons {
-  display: flex;
-  flex-direction: column;
-  padding: 1rem;
+.btn {
   position: absolute;
-  top: 500px;
-  left: 100px;
+  top: 80px;
+  left: 10px;
+  margin: .5rem;
+  background-color: white;
+  padding: 0.5rem;
+  width: 50px;
+  text-align: center;
+  cursor: pointer;
 }
 
-.btn {
-  margin: .5rem;
+.btn:hover {
+  background-color: lightgrey;
 }
 </style>
