@@ -13,6 +13,18 @@
         >
         </circle>
       </transition-group>
+      <transition-group tag="g" out-in name="line">
+        <circle
+          v-for="n in semaphores"
+          :key="n.id"
+          :r="n.r"
+          :cx="n.x"
+          :cy="n.y"
+          :fill="n.color"
+          class="line"
+        >
+        </circle>
+      </transition-group>
     </svg>
     </div>
 </template>
