@@ -32,15 +32,13 @@ export default {
     }
   },
   methods: {
-    async run(actions) {
+    async run() {
       let me = this
       console.log('Generating actions')
-      if (!actions) {
-        actions = []
-        for (let i=0; i < 10; i++) {
-          const action = this.generateAction()
-          actions.push(action)
-        }
+      let actions = []
+      for (let i=0; i < 10; i++) {
+        const action = this.generateAction()
+        actions.push(action)
       }
 
       for (let j=0; j<actions.length; j++) {
@@ -49,36 +47,6 @@ export default {
           me.takeAction(actions[j])
         }, j*1000 );
       }
-    },
-    generatePath() {
-      const target = {
-        category: "paths",
-        id: "p1"
-      }
-      const color = 'black'
-      const mutations = [
-        {
-          key: "id",
-          value: target.id
-        },
-        {
-          key: "x",
-          value: xVal
-        },
-        {
-          key: "y",
-          value: yVal
-        },
-        {
-          key: "r",
-          value: 30
-        },
-        {
-          key: "color",
-          value: colors[index]
-        }
-      ]
-      return new Action(target, mutations)
     },
     generateAction() {
       const target = {
