@@ -7,12 +7,14 @@
 </template>
 
 <script>
-// import * as d3 from "d3"
+import Vue from 'vue'
 import TopBar from "@/components/TopBar.vue"
 import Map from "@/components/Map.vue"
-// import Runner from "@/Runner.js"
-import Action from "@/Action.js"
-import Vue from 'vue'
+import Board from "@/classes/Board.js"
+import Action from "@/classes/Action.js"
+import APIService from "@/api.js"
+
+const api = new APIService()
 
 export default {
   name: "Level",
@@ -97,6 +99,11 @@ export default {
   },
   created() {
     this.levelString = this.$route.params.level
+  },
+  mounted() {
+    api.getLevelData(1)
+      .then(res => console.log(res.data))
+      .catch(err => console.error(err))
   }
 }
 </script>
