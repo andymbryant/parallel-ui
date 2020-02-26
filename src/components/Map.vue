@@ -25,7 +25,7 @@ export default {
   },
   data: function() {
     return {
-      height: 701,
+      height: 700,
       width: 700
     }
   },
