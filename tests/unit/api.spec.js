@@ -19,6 +19,7 @@ it('throws error on getPlayerModel with no player arg', async () => {
     thrown = error
   }
 
+
   const response = new Error('Please include a player.')
   expect(thrown).toEqual(response);
 });
