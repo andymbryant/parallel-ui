@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {getPlayerModel} from '@/player-model/player-model'
 
 class APIService {
   constructor() {
@@ -21,6 +22,16 @@ class APIService {
     // }
     let url = `https://jsonplaceholder.typicode.com/posts/${id}`
     return axios.get(url)
+  }
+
+  getPlayerModel(player) {
+    return new Promise((resolve, reject) => {
+      if (player) {
+        resolve(getPlayerModel(player))
+      } else {
+        reject(new Error('Please include a player.'))
+      }
+    })
   }
 }
 

@@ -104,6 +104,14 @@ export default {
     api.getLevelData(1)
       .then(res => console.log(res.data))
       .catch(err => console.error(err))
+
+    api.getPlayerModel('Bobcat')
+      .then(res => console.log(res))
+      .catch(err => console.error(err))
+
+    api.getPlayerModel()
+      .then(res => console.log(res))
+      .catch(err => console.error(err))
   }
 }
 </script>
