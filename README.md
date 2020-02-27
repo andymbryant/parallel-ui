@@ -1,13 +1,12 @@
 # parallel-ui
 
-## Project setup
+## Getting Started
 ```
+git clone https://github.com/andymbryant/parallel-ui.git
+cd parallel-ui
 npm install
-```
-
-### Compiles and hot-reloads for development
-```
 npm run serve
+http://localhost:8080/
 ```
 
 ### Compiles and minifies for production

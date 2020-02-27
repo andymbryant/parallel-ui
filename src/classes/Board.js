@@ -9,6 +9,11 @@ class Board {
     return this._actions
   }
 
+  getCurrentState() {
+    // returns current state without actions
+    return 1
+  }
+
   addAction(action) {
     this._actions.push(action)
   }
