@@ -27,8 +27,10 @@ class APIService {
   getPlayerModel(player) {
     return new Promise((resolve, reject) => {
       if (player) {
+        // if things are successful, put it here
         resolve(getPlayerModel(player))
       } else {
+        // if things are unsucessful
         reject(new Error('Please include a player.'))
       }
     })

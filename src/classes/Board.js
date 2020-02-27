@@ -1,3 +1,5 @@
+// TODO boyd
+
 class Board {
   constructor(actions=[]) {
     this._actions = actions
@@ -5,6 +7,11 @@ class Board {
 
   get actions() {
     return this._actions
+  }
+
+  getCurrentState() {
+    // returns current state without actions
+    return 1
   }
 
   addAction(action) {
