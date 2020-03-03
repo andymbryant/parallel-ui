@@ -26,8 +26,41 @@ export default {
     return {
       levelString: "",
       mapData: {
-        paths: {},
-        semaphores: {},
+        paths: {
+          "p1": {
+            id: "p1",
+            fill: "green",
+            stroke: "black",
+            strokeWidth: "10",
+            x1:"50",
+            x2:"50",
+            y1:"50",
+            y2:"600",
+          }
+        },
+        semaphores: {
+          "s1": {
+            id: "s1",
+            x: 445,
+            y: 266,
+            r: 30,
+            color: 'blue'
+          },
+          "s2": {
+            id: "s2",
+            x: 224,
+            y: 476,
+            r: 22,
+            color: 'red'
+          },
+          "s3": {
+            id: "s3",
+            x: 155,
+            y: 154,
+            r: 35,
+            color: 'purple'
+          }
+        },
         agents: {},
         links: {}
       }
@@ -38,7 +71,7 @@ export default {
       let me = this
       console.log('Generating actions')
       let actions = []
-      for (let i=0; i < 10; i++) {
+      for (let i=0; i < 1; i++) {
         const action = this.generateAction()
         actions.push(action)
       }
@@ -101,17 +134,17 @@ export default {
     this.levelString = this.$route.params.level
   },
   mounted() {
-    api.getLevelData(1)
-      .then(res => console.log(res.data))
-      .catch(err => console.error(err))
+    // api.getLevelData(1)
+    //   .then(res => console.log(res.data))
+    //   .catch(err => console.error(err))
 
-    api.getPlayerModel('Bobcat')
-      .then(res => console.log(res))
-      .catch(err => console.error(err))
+    // api.getPlayerModel('Bobcat')
+    //   .then(res => console.log(res))
+    //   .catch(err => console.error(err))
 
-    api.getPlayerModel()
-      .then(res => console.log(res))
-      .catch(err => console.error(err))
+    // api.getPlayerModel()
+    //   .then(res => console.log(res))
+    //   .catch(err => console.error(err))
   }
 }
 </script>
