@@ -43,7 +43,6 @@ export default {
       selections: {},
       height: 700,
       width: 700,
-      scale: 200,
     }
   },
   methods: {
@@ -68,6 +67,8 @@ export default {
       if ((Math.abs(xVal) - 50) < 50) {
         sem.attr('cx', 50)
       }
+      console.log('board mutated')
+      console.log('action created based on board mutation')
     }
 
   },
@@ -90,7 +91,6 @@ export default {
         .on('end', (d, i, a) => this.dragEnd(d,i,a))
     }
   },
-
   created() {
     this.levelString = this.$route.params.level
   },
