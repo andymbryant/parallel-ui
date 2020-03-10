@@ -2,7 +2,7 @@
   <div class="level-ctr">
     <TopBar title="Intro to Parallel" :isLevel="true" :levelString="levelString" />
     <div class="btn add-element" @click="run()">Run</div>
-    <Map :mapData="mapData" />
+    <Map :board="board" :mapData="mapData" />
   </div>
 </template>
 
@@ -25,6 +25,7 @@ export default {
   data: function() {
     return {
       levelString: "",
+      board: {},
       mapData: {
         paths: {
           "p1": {
@@ -132,19 +133,13 @@ export default {
   },
   created() {
     this.levelString = this.$route.params.level
+    this.board = new Board()
+    this.board.fetchStateData()
+      .then(res => console.log('Successful fetch'))
+      .catch(err => console.error(err))
   },
   mounted() {
-    // api.getLevelData(1)
-    //   .then(res => console.log(res.data))
-    //   .catch(err => console.error(err))
 
-    // api.getPlayerModel('Bobcat')
-    //   .then(res => console.log(res))
-    //   .catch(err => console.error(err))
-
-    // api.getPlayerModel()
-    //   .then(res => console.log(res))
-    //   .catch(err => console.error(err))
   }
 }
 </script>

@@ -14,6 +14,28 @@
         </circle>
       </transition-group>
       <g>
+        <g v-for="row in map" :key="row">
+          <!-- <rect
+            v-for="col of map[row]"
+            :key="col.layout"
+            :x="xScale(col.cell['x'])"
+            :y="yScale(col.cell['y'])"
+            width="100"
+            height="100"
+            fill="black"
+          ></rect> -->
+          <rect
+            v-for="col of map[row]"
+            :key="col.layout"
+            x="200"
+            y="200"
+            width="100"
+            height="100"
+            fill="black"
+          ></rect>
+        </g>
+      </g>
+      <g>
         <line
           v-for="p in paths"
           :key="p.id"
@@ -33,10 +55,12 @@
 
 <script>
 import * as d3 from 'd3'
+import Board from "@/classes/Board.js"
 export default {
   name: 'Map',
   props: {
-    mapData: Object
+    mapData: Object,
+    board: Board
   },
   data: function() {
     return {
@@ -78,6 +102,31 @@ export default {
     },
     semaphores: function() {
       return this.mapData.semaphores
+    },
+    metadata: function() {
+      return this.board.metadata
+    },
+    map: function() {
+      const map = JSON.parse(JSON.stringify(this.board.map))
+      for (const row in map) {
+        for (const col of map[row]) {
+          console.log(col)
+        }
+      }
+      return map
+    },
+    components: function() {
+      return this.board.components
+    },
+    xScale: function() {
+      return d3.scaleLinear()
+        .domain([0, this.metadata.board_wiedth])
+        .range([0, this.width])
+    },
+    yScale: function() {
+      return d3.scaleLinear()
+        .domain([0, this.metadata.board_height])
+        .range([this.height, 0])
     },
     zoom: function() {
       return d3.zoom()
