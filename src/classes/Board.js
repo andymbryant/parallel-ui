@@ -1,4 +1,4 @@
-import board1 from "../data/board1.json";
+import board1 from "../data/board2.json";
 
 class Board {
   constructor(actions=[], metadata=[], map=[], components=[]) {

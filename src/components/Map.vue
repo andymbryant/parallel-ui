@@ -1,6 +1,6 @@
 <template>
   <div class="map-ctr">
-    <svg class="map-svg" :height='height' :width='width'>
+    <svg v-if="board" class="map-svg" :height='height' :width='width'>
       <transition-group tag="g" out-in name="semaphore">
         <circle
           v-for="s in semaphores"
@@ -10,44 +10,31 @@
           :cy="s.y"
           :fill="s.color"
           class="semaphore"
-        >
-        </circle>
+        ></circle>
       </transition-group>
-      <g>
-        <g v-for="row in map" :key="row">
-          <!-- <rect
-            v-for="col of map[row]"
-            :key="col.layout"
-            :x="xScale(col.cell['x'])"
-            :y="yScale(col.cell['y'])"
-            width="100"
-            height="100"
-            fill="black"
-          ></rect> -->
+      <g class="map-group">
+        <g v-for="(row, i) in map" :class="'map-row row-' + i" :key="'row_'+ i">
           <rect
-            v-for="col of map[row]"
-            :key="col.layout"
-            x="200"
-            y="200"
-            width="100"
-            height="100"
-            fill="black"
+            v-for="(col, j) of row"
+            :key="col.id"
+            :x="xScale(i)"
+            :y="yScale(j)"
+            :width="tileWidth"
+            :height="tileHeight"
+            :fill="tileColor(i + j)"
           ></rect>
         </g>
       </g>
-      <g>
-        <line
-          v-for="p in paths"
-          :key="p.id"
-          :stroke="p.stroke"
-          :stroke-width="p.strokeWidth"
-          stroke-linecap="butt"
-          :x1="p.x1"
-          :x2="p.x2"
-          :y1="p.y1"
-          :y2="p.y2"
+      <g v-if="xScale" class='path-group'>
+        <path
+          v-for="(path, i) in paths"
+          :key="'path_'+i"
+          stroke="black"
+          stroke-width="1"
           class="line"
-        ></line>
+          fill="none"
+          :d="line(path)"
+        ></path>
       </g>
     </svg>
   </div>
@@ -59,7 +46,6 @@ import Board from "@/classes/Board.js"
 export default {
   name: 'Map',
   props: {
-    mapData: Object,
     board: Board
   },
   data: function() {
@@ -93,40 +79,96 @@ export default {
       }
       console.log('board mutated')
       console.log('action created based on board mutation')
-    }
-
+    },
   },
   computed: {
+    tileWidth: function() {
+      return this.width / (this.metadata.board_dimensions[0] - 1)
+    },
+    tileHeight: function() {
+      return this.height / (this.metadata.board_dimensions[1] - 1)
+    },
+    tileColor: function() {
+      return d3.scaleOrdinal(d3.schemeCategory10);
+    },
     paths: function() {
-      return this.mapData.paths
+      return [
+        [
+          {
+            id:"01",
+            x:1,
+            y:1
+          },
+          {
+            id:"02",
+            x:2,
+            y:1
+          },
+          {
+            id:"03",
+            x:2,
+            y:2
+          },
+          {
+            id:"04",
+            x:1,
+            y:2
+          },
+          {
+            id:"05",
+            x:1,
+            y:2
+          }
+        ],
+        [
+          {
+            id:"06",
+            x:1,
+            y:2
+          },
+          {
+            id:"07",
+            x:5,
+            y:7
+          }
+        ]
+      ]
     },
     semaphores: function() {
-      return this.mapData.semaphores
+      // return this.board.components.filter( c => c.type === "semaphore")
+      return []
+    },
+    threads: function() {
+      // return this.board.components.filter(c => c.type === "thread")
+      return []
     },
     metadata: function() {
       return this.board.metadata
     },
     map: function() {
-      const map = JSON.parse(JSON.stringify(this.board.map))
-      for (const row in map) {
-        for (const col of map[row]) {
-          console.log(col)
-        }
-      }
-      return map
+      return this.board.map
     },
     components: function() {
       return this.board.components
     },
     xScale: function() {
       return d3.scaleLinear()
-        .domain([0, this.metadata.board_wiedth])
+        .domain([0, this.metadata.board_dimensions[0]-1])
         .range([0, this.width])
     },
     yScale: function() {
       return d3.scaleLinear()
-        .domain([0, this.metadata.board_height])
+        .domain([0, this.metadata.board_dimensions[1]-1])
         .range([this.height, 0])
+    },
+
+    line: function() {
+      return d3.line()
+        .x(d => this.xScale(d.x))
+        .y(d => this.yScale(d.y))
+        // .curve(d3.curveMonotoneX)
+        .curve(d3.curveCardinal);
+
     },
     zoom: function() {
       return d3.zoom()
@@ -149,6 +191,7 @@ export default {
     this.selections.svg.call(this.zoom)
     const circles = this.selections.circleGroup.selectAll('circle')
     this.drag(circles)
+
   }
 }
 </script>

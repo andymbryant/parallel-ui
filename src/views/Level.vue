@@ -2,7 +2,7 @@
   <div class="level-ctr">
     <TopBar title="Intro to Parallel" :isLevel="true" :levelString="levelString" />
     <div class="btn add-element" @click="run()">Run</div>
-    <Map :board="board" :mapData="mapData" />
+    <Map :board="board"/>
   </div>
 </template>
 
@@ -25,46 +25,7 @@ export default {
   data: function() {
     return {
       levelString: "",
-      board: {},
-      mapData: {
-        paths: {
-          "p1": {
-            id: "p1",
-            fill: "green",
-            stroke: "black",
-            strokeWidth: "10",
-            x1:"50",
-            x2:"50",
-            y1:"50",
-            y2:"600",
-          }
-        },
-        semaphores: {
-          "s1": {
-            id: "s1",
-            x: 445,
-            y: 266,
-            r: 30,
-            color: 'blue'
-          },
-          "s2": {
-            id: "s2",
-            x: 224,
-            y: 476,
-            r: 22,
-            color: 'red'
-          },
-          "s3": {
-            id: "s3",
-            x: 155,
-            y: 154,
-            r: 35,
-            color: 'purple'
-          }
-        },
-        agents: {},
-        links: {}
-      }
+      board: {}
     }
   },
   methods: {
@@ -117,16 +78,6 @@ export default {
       ]
       return new Action(target, mutations)
     },
-    takeAction(action) {
-      const {category, id} = action.target
-      action.mutations.forEach(mutation => {
-        const {key, value} = mutation
-        if (!Object.prototype.hasOwnProperty.call(this.mapData[category], (id))) {
-          Vue.set(this.mapData[category], id, {})
-        }
-        Vue.set(this.mapData[category][id], key, value)
-      })
-    },
     sleep(ms) {
       return new Promise((resolve) => setTimeout(resolve, ms))
     }
@@ -138,9 +89,6 @@ export default {
       .then(res => console.log('Successful fetch'))
       .catch(err => console.error(err))
   },
-  mounted() {
-
-  }
 }
 </script>
 
