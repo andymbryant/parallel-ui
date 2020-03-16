@@ -1,14 +1,15 @@
 <template>
   <div class="level-ctr">
     <TopBar title="Intro to Parallel" :isLevel="true" :levelString="levelString" />
-    <div class="btn add-element" @click="run()">Run</div>
     <Map :board="board"/>
+    <BotBar/>
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
 import TopBar from "@/components/TopBar.vue"
+import BotBar from "@/components/BotBar.vue"
 import Map from "@/components/Map.vue"
 import Board from "@/classes/Board.js"
 import Action from "@/classes/Action.js"
@@ -20,6 +21,7 @@ export default {
   name: "Level",
   components: {
     TopBar,
+    BotBar,
     Map
   },
   data: function() {
