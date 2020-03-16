@@ -2,7 +2,7 @@
   <div class="level-ctr">
     <TopBar title="Intro to Parallel" :isLevel="true" :levelString="levelString" />
     <Map :board="board"/>
-    <BotBar/>
+    <BotBar :run="run" />
   </div>
 </template>
 
@@ -31,21 +31,8 @@ export default {
     }
   },
   methods: {
-    async run() {
-      let me = this
-      console.log('Generating actions')
-      let actions = []
-      for (let i=0; i < 1; i++) {
-        const action = this.generateAction()
-        actions.push(action)
-      }
-
-      for (let j=0; j<actions.length; j++) {
-        setTimeout( function timer() {
-        console.log(`running action ${j + 0}`)
-          me.takeAction(actions[j])
-        }, j*1000 );
-      }
+    async run(string) {
+      console.log(`Run ${string}`)
     },
     generateAction() {
       const target = {

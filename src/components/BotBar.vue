@@ -5,8 +5,8 @@
         <button class="bot-btn goal-btn">LEVEL GOAL</button>
       </div>
       <div class="test-submit-ctr">
-        <button class="bot-btn test-btn">TEST</button>
-        <button class="bot-btn submit-btn">SUBMIT</button>
+        <button @click="run('test')" class="bot-btn test-btn">TEST</button>
+        <button @click="run('submit')" class="bot-btn submit-btn">SUBMIT</button>
       </div>
     </div>
   </div>
@@ -17,7 +17,8 @@ export default {
   name: 'BotBar',
   props: {
     isLevel: Boolean,
-    levelString: String
+    levelString: String,
+    run: Function
   },
   methods: {
   }
@@ -70,6 +71,7 @@ export default {
   font-size: 1rem;
   padding: 5px;
   color: white;
+  cursor: pointer;
 }
 
 
