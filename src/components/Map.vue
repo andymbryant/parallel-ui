@@ -25,15 +25,21 @@
           ></rect>
         </g>
       </g>
-      <g v-if="xScale" class='path-group'>
-        <path
+      <g class='path-group'>
+        <!-- <path
           v-for="(path, i) in paths"
           :key="'path_'+i"
           stroke="black"
-          stroke-width="1"
+          stroke-width="20"
           class="line"
           fill="none"
           :d="line(path)"
+        ></path> -->
+        <path
+          stroke="black"
+          stroke-width="20"
+          class="symbol"
+          :d="generateIcon(star)"
         ></path>
       </g>
     </svg>
@@ -51,8 +57,8 @@ export default {
   data: function() {
     return {
       selections: {},
-      height: 700,
-      width: 700,
+      height: 800,
+      width: 900,
     }
   },
   methods: {
@@ -89,50 +95,53 @@ export default {
       return this.height / (this.metadata.board_dimensions[1] - 1)
     },
     tileColor: function() {
-      return d3.scaleOrdinal(d3.schemeCategory10);
+      return d3.scaleOrdinal(d3.schemePastel2);
     },
     paths: function() {
-      return [
-        [
-          {
-            id:"01",
-            x:1,
-            y:1
-          },
-          {
-            id:"02",
-            x:2,
-            y:1
-          },
-          {
-            id:"03",
-            x:2,
-            y:2
-          },
-          {
-            id:"04",
-            x:1,
-            y:2
-          },
-          {
-            id:"05",
-            x:1,
-            y:2
-          }
-        ],
-        [
-          {
-            id:"06",
-            x:1,
-            y:2
-          },
-          {
-            id:"07",
-            x:5,
-            y:7
-          }
-        ]
-      ]
+      let allPaths = this.map.flat().filter(p => p.id)
+      let paths = Array.from(allPaths, p => {
+        return {
+          "x": p.coords[0],
+          "y": p.coords[1]
+        }
+      })
+      console.log(paths)
+      // return [[paths[0], paths[1]]]
+      return [paths]
+      // return [
+      //   [
+      //     {
+      //       x:1,
+      //       y:1
+      //     },
+      //     {
+      //       x:2,
+      //       y:1
+      //     },
+      //     {
+      //       x:2,
+      //       y:2
+      //     },
+      //     {
+      //       x:1,
+      //       y:2
+      //     },
+      //     {
+      //       x:1,
+      //       y:2
+      //     }
+      //   ],
+      //   [
+      //     {
+      //       x:1,
+      //       y:2
+      //     },
+      //     {
+      //       x:5,
+      //       y:7
+      //     }
+      //   ]
+      // ]
     },
     semaphores: function() {
       // return this.board.components.filter( c => c.type === "semaphore")
@@ -141,6 +150,14 @@ export default {
     threads: function() {
       // return this.board.components.filter(c => c.type === "thread")
       return []
+    },
+    generateIcon: function() {
+      return d3.symbol()
+        .type(d => d)
+        .size(80);
+    },
+    star: function() {
+      return d3.symbolStar
     },
     metadata: function() {
       return this.board.metadata
@@ -159,9 +176,8 @@ export default {
     yScale: function() {
       return d3.scaleLinear()
         .domain([0, this.metadata.board_dimensions[1]-1])
-        .range([this.height, 0])
+        .range([0, this.height])
     },
-
     line: function() {
       return d3.line()
         .x(d => this.xScale(d.x))
@@ -191,7 +207,6 @@ export default {
     this.selections.svg.call(this.zoom)
     const circles = this.selections.circleGroup.selectAll('circle')
     this.drag(circles)
-
   }
 }
 </script>
