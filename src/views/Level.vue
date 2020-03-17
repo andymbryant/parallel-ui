@@ -1,5 +1,6 @@
 <template>
   <div class="level-ctr">
+    <Modal v-if="parsing" :text="'Parsing...'"/>
     <TopBar title="Intro to Parallel" :isLevel="true" :levelString="levelString" />
     <Map v-if="!loading" :board="board" :mapData="mapData"/>
     <BotBar :run="run"/>
@@ -11,6 +12,7 @@ import Vue from 'vue'
 import TopBar from "@/components/TopBar.vue"
 import BotBar from "@/components/BotBar.vue"
 import Map from "@/components/Map.vue"
+import Modal from "@/components/Modal.vue"
 import Board from "@/classes/Board.js"
 import Action from "@/classes/Action.js"
 import APIService from "@/api.js"
@@ -22,7 +24,8 @@ export default {
   components: {
     TopBar,
     BotBar,
-    Map
+    Map,
+    Modal
   },
   data: function() {
     return {
@@ -42,6 +45,7 @@ export default {
     async run(string) {
       let me = this
       this.parsing = true
+      await this.sleep(1500)
       this.board.fetchActionData()
         .then(res => {
           this.parsing = false
