@@ -26,18 +26,17 @@
         </g>
       </g>
       <!-- <transition-group v-for="cat in iconCategories" tag="g" out-in :name="cat" :key="cat"> -->
-      <transition-group v-if="iconCategories.length" tag="g" out-in name="paths">
-        <g v-for="cat in iconCategories" :key="cat">
+      <transition-group v-for="cat in iconCategories" tag="g" out-in name="paths" :class="cat" :key="cat">
         <path
           v-for="p in mapData[cat]"
-          :key="p.id"
+          :key="p.id ? p.id : Math.random()"
           stroke="black"
-          stroke-width="20"
-          class="thread"
-          :transform="`translate(${xScale(p.cell[0])},${yScale(p.cell[1])})`"
-          :d="generateIcon(star)"
+          stroke-width="1"
+          fill="red"
+          :class="p.id"
+          :transform="`translate(${xScale(p.cell[0])},${yScale(p.cell[1])}), scale(2, 2)`"
+          :d="generateIcon(p.type)"
         ></path>
-        </g>
       </transition-group>
     </svg>
   </div>
@@ -58,6 +57,7 @@ export default {
       iconCategories: [],
       height: 800,
       width: 900,
+      greyscale: ['#F2F2F2', '#D9D9D9']
     }
   },
   methods: {
@@ -94,7 +94,7 @@ export default {
       return this.height / (this.metadata.board_dimensions[1] - 1)
     },
     tileColor: function() {
-      return d3.scaleOrdinal(d3.schemePastel2);
+      return d3.scaleOrdinal(this.greyscale);
     },
     paths: function() {
       let allPaths = this.map.flat().filter(p => p.id)
@@ -121,7 +121,17 @@ export default {
     },
     generateIcon: function() {
       return d3.symbol()
-        .type(d => d)
+        .type(d => {
+          if (d === 'thread') {
+            return d3.symbolCircle
+          } else if (d === 'pickup') {
+            return d3.symbolCross
+          } else if (d === 'delivery') {
+            return d3.symbolStar
+          } else {
+            return d3.symbolTriangle
+          }
+        })
         .size(80);
     },
     star: function() {
@@ -210,7 +220,7 @@ export default {
   transition: all 1s;
   transform: all 1s;
   stroke: black;
-  stroke-width: 2
+  stroke-width: 2;
 }
 
 </style>
