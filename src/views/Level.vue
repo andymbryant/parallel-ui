@@ -63,7 +63,6 @@ export default {
       action.mutations.forEach(mutation => {
         const {key, value} = mutation
         // console.log(this.mapData[cat])
-        console.log(category)
         if (!Object.prototype.hasOwnProperty.call(this.mapData[category], (id))) {
           Vue.set(this.mapData[category], id, {})
         }
