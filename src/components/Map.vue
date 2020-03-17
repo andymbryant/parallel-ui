@@ -32,10 +32,10 @@
           :key="p._id"
           stroke="black"
           stroke-width="1"
-          fill="red"
+          :fill="getIconColor(p.type)"
           class="path"
-          :transform="`translate(${xScale(p.cell[0])},${yScale(p.cell[1])}), scale(2, 2)`"
-          :d="generateIcon(p.type)"
+          :transform="`translate(${xScale(p.cell[0])},${yScale(p.cell[1])}), scale(3, 3)`"
+          :d="getIconPath(p.type)"
         ></path>
       </transition-group>
     </svg>
@@ -61,6 +61,17 @@ export default {
     }
   },
   methods: {
+    getIconColor(type) {
+      if (type === "thread") {
+        return 'red'
+      } else if (type === "pickip") {
+        return 'blue'
+      } else if (type === "delivery") {
+        return 'green'
+      } else {
+        return 'purple'
+      }
+    },
     zoomed() {
       const transform = d3.event.transform
       d3.selectAll('.line').attr("transform", transform)
@@ -119,7 +130,7 @@ export default {
     deliveries: function() {
       return this.mapData.deliveries
     },
-    generateIcon: function() {
+    getIconPath: function() {
       return d3.symbol()
         .type(d => {
           if (d === 'thread') {

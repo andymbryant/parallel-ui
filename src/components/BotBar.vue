@@ -59,7 +59,7 @@ export default {
 }
 
 .test-submit-ctr {
-  width: 500px;
+  width: 330px;
   display: flex;
   justify-content: space-between;
 }
