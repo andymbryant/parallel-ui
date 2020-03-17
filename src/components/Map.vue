@@ -25,7 +25,7 @@
           ></rect>
         </g>
       </g>
-      <g class='path-group'>
+      <transition-group tag="g" out-in name="thread">
         <!-- <path
           v-for="(path, i) in paths"
           :key="'path_'+i"
@@ -36,12 +36,15 @@
           :d="line(path)"
         ></path> -->
         <path
+          v-for="t in threads"
+          :key="t.id"
           stroke="black"
           stroke-width="20"
-          class="symbol"
+          class="thread"
+          :transform="`translate(${xScale(t.x)},${yScale(t.y)})`"
           :d="generateIcon(star)"
         ></path>
-      </g>
+      </transition-group>
     </svg>
   </div>
 </template>
@@ -52,7 +55,8 @@ import Board from "@/classes/Board.js"
 export default {
   name: 'Map',
   props: {
-    board: Board
+    board: Board,
+    mapData: Object
   },
   data: function() {
     return {
@@ -105,51 +109,14 @@ export default {
           "y": p.coords[1]
         }
       })
-      console.log(paths)
-      // return [[paths[0], paths[1]]]
       return [paths]
-      // return [
-      //   [
-      //     {
-      //       x:1,
-      //       y:1
-      //     },
-      //     {
-      //       x:2,
-      //       y:1
-      //     },
-      //     {
-      //       x:2,
-      //       y:2
-      //     },
-      //     {
-      //       x:1,
-      //       y:2
-      //     },
-      //     {
-      //       x:1,
-      //       y:2
-      //     }
-      //   ],
-      //   [
-      //     {
-      //       x:1,
-      //       y:2
-      //     },
-      //     {
-      //       x:5,
-      //       y:7
-      //     }
-      //   ]
-      // ]
     },
     semaphores: function() {
       // return this.board.components.filter( c => c.type === "semaphore")
       return []
     },
     threads: function() {
-      // return this.board.components.filter(c => c.type === "thread")
-      return []
+      return this.mapData.threads
     },
     generateIcon: function() {
       return d3.symbol()
@@ -234,6 +201,13 @@ export default {
 
 .semaphore:hover {
   stroke-width: 4
+}
+
+.thread {
+  transition: all 1s;
+  transform: all 1s;
+  stroke: black;
+  stroke-width: 2
 }
 
 </style>

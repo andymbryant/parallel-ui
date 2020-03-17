@@ -7,6 +7,7 @@
       <div class="test-submit-ctr">
         <button @click="run('test')" class="bot-btn test-btn">TEST</button>
         <button @click="run('submit')" class="bot-btn submit-btn">SUBMIT</button>
+        <button @click="terminate()" class="bot-btn submit-btn">STOP</button>
       </div>
     </div>
   </div>
@@ -18,7 +19,8 @@ export default {
   props: {
     isLevel: Boolean,
     levelString: String,
-    run: Function
+    run: Function,
+    terminate: Function
   },
   methods: {
   }
@@ -59,7 +61,7 @@ export default {
 }
 
 .test-submit-ctr {
-  width: 320px;
+  width: 500px;
   display: flex;
   justify-content: space-between;
 }

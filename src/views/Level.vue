@@ -1,8 +1,8 @@
 <template>
   <div class="level-ctr">
     <TopBar title="Intro to Parallel" :isLevel="true" :levelString="levelString" />
-    <Map :board="board"/>
-    <BotBar :run="run" />
+    <Map :board="board" :mapData="mapData"/>
+    <BotBar :run="run" :terminate="terminate" />
   </div>
 </template>
 
@@ -27,45 +27,59 @@ export default {
   data: function() {
     return {
       levelString: "",
+      loading: false,
+      parsing: false,
+      terminated: false,
+      mapData: {
+        semaphores: {},
+        threads: {
+          "1001": {
+            id: "1001",
+            x: 3,
+            y: 3
+          },
+          "1002": {
+            id: "1002",
+            x: 1,
+            y: 1
+          }
+        }
+      },
       board: {}
     }
   },
   methods: {
-    async run(string) {
-      console.log(`Run ${string}`)
+    terminate() {
+      this.terminated = true
     },
-    generateAction() {
-      const target = {
-        category: "semaphores",
-        id: "s1"
-      }
-      const colors = ['red', 'green', 'blue', 'yellow', 'purple', 'pink', 'orange', 'cyan']
-      const xVal = Math.floor(Math.random() * 600) + 100;
-      const yVal = Math.floor(Math.random() * 600) + 100;
-      const index = Math.floor(Math.random() * colors.length) + 0;
-      const mutations = [
-        {
-          key: "id",
-          value: target.id
-        },
-        {
-          key: "x",
-          value: xVal
-        },
-        {
-          key: "y",
-          value: yVal
-        },
-        {
-          key: "r",
-          value: 30
-        },
-        {
-          key: "color",
-          value: colors[index]
+    async run(string) {
+      let me = this
+      this.parsing = true
+      this.board.fetchActionData()
+        .then(res => {
+          this.parsing = false
+          for (let i = 0; i < me.board.numActions; i++) {
+            let nextAction = me.board.nextAction
+            setTimeout(function timer() {
+              if (!this.terminated) {
+                me.takeAction(nextAction)
+              } else {
+                return -1
+              }
+            }, i * 1000 );
+          }
+        })
+        .catch(err => console.error(err))
+    },
+    takeAction(action) {
+      const {category, id} = action.target
+      action.mutations.forEach(mutation => {
+        const {key, value} = mutation
+        if (!Object.prototype.hasOwnProperty.call(this.mapData[category], (id))) {
+          Vue.set(this.mapData[category], id, {})
         }
-      ]
-      return new Action(target, mutations)
+        Vue.set(this.mapData[category][id], key, value)
+      })
     },
     sleep(ms) {
       return new Promise((resolve) => setTimeout(resolve, ms))
@@ -74,7 +88,7 @@ export default {
   created() {
     this.levelString = this.$route.params.level
     this.board = new Board()
-    this.board.fetchStateData()
+    this.board.fetchBoardData()
       .then(res => console.log('Successful fetch'))
       .catch(err => console.error(err))
   },
