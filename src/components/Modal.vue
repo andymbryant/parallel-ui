@@ -34,7 +34,7 @@ export default {
     justify-content: center;
   }
   .modal-box {
-    border: 1px solid black;
+    border: 3px solid black;
     background-color: white;
     width: 300px;
     height: 200px;
