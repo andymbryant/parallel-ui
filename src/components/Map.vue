@@ -1,6 +1,6 @@
 <template>
   <div class="map-ctr">
-    <svg class="map-svg" :height='height' :width='width'>
+    <svg v-if="board" class="map-svg" :height='height' :width='width'>
       <transition-group tag="g" out-in name="semaphore">
         <circle
           v-for="s in semaphores"
@@ -10,43 +10,68 @@
           :cy="s.y"
           :fill="s.color"
           class="semaphore"
-        >
-        </circle>
+        ></circle>
       </transition-group>
-      <g>
-        <line
-          v-for="p in paths"
-          :key="p.id"
-          :stroke="p.stroke"
-          :stroke-width="p.strokeWidth"
-          stroke-linecap="butt"
-          :x1="p.x1"
-          :x2="p.x2"
-          :y1="p.y1"
-          :y2="p.y2"
-          class="line"
-        ></line>
+      <g class="map-group">
+        <g v-for="(row, i) in map" :class="'map-row row-' + i" :key="'row_'+ i">
+          <rect
+            v-for="(col, j) of row"
+            :key="col.id"
+            :x="xScale(i)"
+            :y="yScale(j)"
+            :width="tileWidth"
+            :height="tileHeight"
+            :fill="tileColor(i + j)"
+          ></rect>
+        </g>
       </g>
+      <!-- <transition-group v-for="cat in iconCategories" tag="g" out-in :name="cat" :key="cat"> -->
+      <transition-group v-for="cat in iconCategories" tag="g" name="paths" :class="cat" :key="cat">
+        <path
+          v-for="p in mapData[cat]"
+          :key="p._id"
+          stroke="black"
+          stroke-width="1"
+          :fill="getIconColor(p.type)"
+          class="path"
+          :transform="`translate(${xScale(p.cell[0])},${yScale(p.cell[1])}), scale(3, 3)`"
+          :d="getIconPath(p.type)"
+        ></path>
+      </transition-group>
     </svg>
   </div>
 </template>
 
 <script>
 import * as d3 from 'd3'
+import Board from "@/classes/Board.js"
 export default {
   name: 'Map',
   props: {
+    board: Board,
     mapData: Object
   },
   data: function() {
     return {
       selections: {},
-      height: 700,
-      width: 700,
-      scale: 200,
+      iconCategories: [],
+      height: 800,
+      width: 900,
+      greyscale: ['#F2F2F2', '#D9D9D9']
     }
   },
   methods: {
+    getIconColor(type) {
+      if (type === "thread") {
+        return 'red'
+      } else if (type === "pickip") {
+        return 'blue'
+      } else if (type === "delivery") {
+        return 'green'
+      } else {
+        return 'purple'
+      }
+    },
     zoomed() {
       const transform = d3.event.transform
       d3.selectAll('.line').attr("transform", transform)
@@ -68,15 +93,87 @@ export default {
       if ((Math.abs(xVal) - 50) < 50) {
         sem.attr('cx', 50)
       }
-    }
-
+      console.log('board mutated')
+      console.log('action created based on board mutation')
+    },
   },
   computed: {
+    tileWidth: function() {
+      return this.width / (this.metadata.board_dimensions[0] - 1)
+    },
+    tileHeight: function() {
+      return this.height / (this.metadata.board_dimensions[1] - 1)
+    },
+    tileColor: function() {
+      return d3.scaleOrdinal(this.greyscale);
+    },
     paths: function() {
-      return this.mapData.paths
+      let allPaths = this.map.flat().filter(p => p.id)
+      let paths = Array.from(allPaths, p => {
+        return {
+          "x": p.coords[0],
+          "y": p.coords[1]
+        }
+      })
+      return [paths]
     },
     semaphores: function() {
-      return this.mapData.semaphores
+      // return this.board.components.filter( c => c.type === "semaphore")
+      return []
+    },
+    threads: function() {
+      return this.mapData.threads
+    },
+    pickups: function() {
+      return this.mapData.pickups
+    },
+    deliveries: function() {
+      return this.mapData.deliveries
+    },
+    getIconPath: function() {
+      return d3.symbol()
+        .type(d => {
+          if (d === 'thread') {
+            return d3.symbolCircle
+          } else if (d === 'pickup') {
+            return d3.symbolCross
+          } else if (d === 'delivery') {
+            return d3.symbolStar
+          } else {
+            return d3.symbolTriangle
+          }
+        })
+        .size(80);
+    },
+    star: function() {
+      return d3.symbolStar
+    },
+    metadata: function() {
+      return this.board.metadata
+    },
+    map: function() {
+      return this.board.map
+    },
+    components: function() {
+      return this.board.components
+    },
+    xScale: function() {
+      return d3.scaleLinear()
+        .domain([0, this.metadata.board_dimensions[0]-1])
+        .range([0, this.width])
+    },
+    yScale: function() {
+      return d3.scaleLinear()
+        .domain([0, this.metadata.board_dimensions[1]-1])
+        .range([0, this.height])
+    },
+    line: function() {
+      return d3.line()
+        .x(d => this.xScale(d.x))
+        .y(d => this.yScale(d.y))
+        // .curve(d3.curveMonotoneX)
+        .curve(d3.curveCardinal);
+
     },
     zoom: function() {
       return d3.zoom()
@@ -90,9 +187,10 @@ export default {
         .on('end', (d, i, a) => this.dragEnd(d,i,a))
     }
   },
-
   created() {
     this.levelString = this.$route.params.level
+    this.iconCategories = Object.keys(this.mapData)
+    console.log(this.mapData)
   },
   mounted: function() {
     this.selections.svg = d3.select(this.$el.querySelector("svg"))
@@ -127,6 +225,10 @@ export default {
 
 .semaphore:hover {
   stroke-width: 4
+}
+
+.path {
+  transition: transform .2s linear;
 }
 
 </style>

@@ -1,0 +1,723 @@
+{
+  "metadata": {
+    "level_id": 4,
+    "pcg_id": "N/A",
+    "level_title": "Intro to Parallel",
+    "goal_string": "Deliver 4 packages with each arrow delivering at least 2",
+    "goal_struct": "TBD",
+    "time_pickup_min": 0,
+    "time_delivery_min": 1,
+    "time_exchange_min": 0,
+    "time_pickup_Max": 0,
+    "time_delivery_max": 3,
+    "time_exchange_max": 0,
+    "board_wiedth": 9,
+    "board_height": 8,
+    "skills": [
+      "Hover over objects to see what they do",
+      "Use help bar",
+      "Hover over side arrows to see different colored tracks",
+      "Drag objects",
+      "Place objects on the track",
+      "Remove unnecessary elements",
+      "Be able to link semaphores to buttons",
+      "Use diverters",
+      "Understand the use of semaphores",
+      "Prevent starvation",
+      "Block critical sections",
+      "Understand that arrows move at unpredictable rates",
+      "Alternating access with semaphores and buttons (ensure mutual exclusion)",
+      "Synchronize multiple arrows",
+      "Testing before submitting",
+      "Avoid race conditions"
+    ]
+  },
+  "map": [
+    [
+      {
+        "layout": "F",
+        "direction": [
+          "V"
+        ],
+        "cell": {
+          "x": 0,
+          "y": 0
+        },
+        "color": [
+          1
+        ],
+        "components": []
+      },
+      {
+        "layout": "E",
+        "direction": [
+          "<"
+        ],
+        "cell": {
+          "x": 1,
+          "y": 0
+        },
+        "color": [
+          1
+        ],
+        "components": []
+      },
+      {
+        "layout": "E",
+        "direction": [
+          "<"
+        ],
+        "cell": {
+          "x": 2,
+          "y": 0
+        },
+        "color": [
+          1
+        ],
+        "components": [
+          "1001"
+        ]
+      },
+      {
+        "layout": "E",
+        "direction": [
+          "<"
+        ],
+        "cell": {
+          "x": 3,
+          "y": 0
+        },
+        "color": [
+          1
+        ],
+        "components": []
+      },
+      {
+        "layout": "G",
+        "direction": [
+          "<",
+          ">"
+        ],
+        "cell": {
+          "x": 4,
+          "y": 0
+        },
+        "color": [
+          1,
+          2
+        ],
+        "components": []
+      },
+      {
+        "layout": "E",
+        "direction": [
+          ">"
+        ],
+        "cell": {
+          "x": 5,
+          "y": 0
+        },
+        "color": [
+          2
+        ],
+        "components": []
+      },
+      {
+        "layout": "E",
+        "direction": [
+          ">"
+        ],
+        "cell": {
+          "x": 6,
+          "y": 0
+        },
+        "color": [
+          2
+        ],
+        "components": [
+          "1002"
+        ]
+      },
+      {
+        "layout": "E",
+        "direction": [
+          ">"
+        ],
+        "cell": {
+          "x": 7,
+          "y": 0
+        },
+        "colors": [
+          2
+        ],
+        "components": []
+      },
+      {
+        "layout": "C",
+        "direction": [
+          "V"
+        ],
+        "cell": {
+          "x": 8,
+          "y": 0
+        },
+        "color": [
+          2
+        ],
+        "components": []
+      }
+    ],
+    [
+      {
+        "layout": "J",
+        "direction": [
+          "V"
+        ],
+        "cell": {
+          "x": 0,
+          "y": 1
+        },
+        "color": [
+          1
+        ],
+        "components": []
+      },
+      {},
+      {},
+      {},
+      {
+        "layout": "J",
+        "direction": [
+          "A"
+        ],
+        "cell": {
+          "x": 4,
+          "y": 1
+        },
+        "color": [
+          1,
+          2
+        ],
+        "components": []
+      },
+      {},
+      {},
+      {},
+      {
+        "layout": "J",
+        "direction": [
+          "V"
+        ],
+        "cell": {
+          "x": 8,
+          "y": 1
+        },
+        "color": [
+          2
+        ],
+        "components": []
+      }
+    ],
+    [
+      {
+        "layout": "J",
+        "direction": [
+          "V"
+        ],
+        "cell": {
+          "x": 0,
+          "y": 2
+        },
+        "color": [
+          1
+        ],
+        "components": []
+      },
+      {},
+      {},
+      {},
+      {
+        "layout": "J",
+        "direction": [
+          "A"
+        ],
+        "cell": {
+          "x": 4,
+          "y": 2
+        },
+        "color": [
+          1,
+          2
+        ],
+        "components": []
+      },
+      {},
+      {},
+      {},
+      {
+        "layout": "J",
+        "direction": [
+          "V"
+        ],
+        "cell": {
+          "x": 8,
+          "y": 2
+        },
+        "color": [
+          2
+        ],
+        "components": []
+      }
+    ],
+    [
+      {
+        "layout": "J",
+        "direction": [
+          "V"
+        ],
+        "cell": {
+          "x": 0,
+          "y": 3
+        },
+        "color": [
+          1
+        ],
+        "components": []
+      },
+      {},
+      {},
+      {},
+      {
+        "layout": "J",
+        "direction": [
+          "A"
+        ],
+        "cell": {
+          "x": 4,
+          "y": 3
+        },
+        "color": [
+          1,
+          2
+        ],
+        "components": []
+      },
+      {},
+      {},
+      {},
+      {
+        "layout": "J",
+        "direction": [
+          "V"
+        ],
+        "cell": {
+          "x": 8,
+          "y": 3
+        },
+        "color": [
+          2
+        ],
+        "components": []
+      }
+    ],
+    [
+      {
+        "layout": "J",
+        "direction": [
+          "V"
+        ],
+        "cell": {
+          "x": 0,
+          "y": 4
+        },
+        "color": [
+          1
+        ],
+        "components": [
+          "2001"
+        ]
+      },
+      {},
+      {},
+      {},
+      {
+        "layout": "J",
+        "direction": [
+          "A"
+        ],
+        "cell": {
+          "x": 4,
+          "y": 4
+        },
+        "color": [
+          1,
+          2
+        ],
+        "components": [
+          "3001"
+        ]
+      },
+      {},
+      {},
+      {},
+      {
+        "layout": "J",
+        "direction": [
+          "V"
+        ],
+        "cell": {
+          "x": 8,
+          "y": 4
+        },
+        "color": [
+          2
+        ],
+        "components": [
+          "2002"
+        ]
+      }
+    ],
+    [
+      {
+        "layout": "J",
+        "direction": [
+          "V"
+        ],
+        "cell": {
+          "x": 0,
+          "y": 5
+        },
+        "color": [
+          1
+        ],
+        "components": []
+      },
+      {},
+      {},
+      {},
+      {
+        "layout": "J",
+        "direction": [
+          "A"
+        ],
+        "cell": {
+          "x": 4,
+          "y": 5
+        },
+        "color": [
+          1,
+          2
+        ],
+        "components": []
+      },
+      {},
+      {},
+      {},
+      {
+        "layout": "J",
+        "direction": [
+          "V"
+        ],
+        "cell": {
+          "x": 8,
+          "y": 5
+        },
+        "color": [
+          2
+        ],
+        "components": []
+      }
+    ],
+    [
+      {
+        "layout": "J",
+        "direction": [
+          "V"
+        ],
+        "cell": {
+          "x": 0,
+          "y": 6
+        },
+        "color": [
+          1
+        ],
+        "components": []
+      },
+      {},
+      {},
+      {},
+      {
+        "layout": "J",
+        "direction": [
+          "A"
+        ],
+        "cell": {
+          "x": 4,
+          "y": 6
+        },
+        "color": [
+          1,
+          2
+        ],
+        "components": []
+      },
+      {},
+      {},
+      {},
+      {
+        "layout": "J",
+        "direction": [
+          "V"
+        ],
+        "cell": {
+          "x": 8,
+          "y": 6
+        },
+        "color": [
+          2
+        ],
+        "components": []
+      }
+    ],
+    [
+      {
+        "layout": "L",
+        "direction": [
+          ">"
+        ],
+        "cell": {
+          "x": 0,
+          "y": 7
+        },
+        "color": [
+          1
+        ],
+        "components": []
+      },
+      {
+        "layout": "E",
+        "direction": [
+          ">"
+        ],
+        "cell": {
+          "x": 1,
+          "y": 7
+        },
+        "color": [
+          1
+        ],
+        "components": []
+      },
+      {
+        "layout": "E",
+        "direction": [
+          ">"
+        ],
+        "cell": {
+          "x": 2,
+          "y": 7
+        },
+        "color": [
+          1
+        ],
+        "components": []
+      },
+      {
+        "layout": "E",
+        "direction": [
+          ">"
+        ],
+        "cell": {
+          "x": 3,
+          "y": 7
+        },
+        "color": [
+          1
+        ],
+        "components": []
+      },
+      {
+        "layout": "M",
+        "direction": [
+          "^"
+        ],
+        "cell": {
+          "x": 4,
+          "y": 7
+        },
+        "color": [
+          1,
+          2
+        ],
+        "components": []
+      },
+      {
+        "layout": "E",
+        "direction": [
+          "<"
+        ],
+        "cell": {
+          "x": 5,
+          "y": 7
+        },
+        "color": [
+          2
+        ],
+        "components": []
+      },
+      {
+        "layout": "E",
+        "direction": [
+          "<"
+        ],
+        "cell": {
+          "x": 6,
+          "y": 7
+        },
+        "color": [
+          2
+        ],
+        "components": []
+      },
+      {
+        "layout": "E",
+        "direction": [
+          "<"
+        ],
+        "cell": {
+          "x": 7,
+          "y": 7
+        },
+        "colors": [
+          2
+        ],
+        "components": []
+      },
+      {
+        "layout": "I",
+        "direction": [
+          "<"
+        ],
+        "cell": {
+          "x": 8,
+          "y": 7
+        },
+        "color": [
+          2
+        ],
+        "components": []
+      }
+    ]
+  ],
+  "components": {
+    "1001": {
+      "type": "thread",
+      "category": "threads",
+      "cell": {
+        "x": 2,
+        "y": 0
+      },
+      "user_placed": false,
+      "locked": true,
+      "info": {
+        "time_pickup_min": -1,
+        "color": 1,
+        "initial_direction": "West",
+        "missed": 0,
+        "time_delivery_max": -1,
+        "delivered": 0,
+        "time_exchange_max": -1,
+        "capacity": -1,
+        "time_pickup_max": -1,
+        "delay": 0,
+        "picked": 0,
+        "time_delivery_min": -1,
+        "passed": 0,
+        "time_exchange_min": -1,
+        "direction": "West"
+      }
+    },
+    "1002": {
+      "type": "thread",
+      "category": "threads",
+      "cell": {
+        "x": 6,
+        "y": 0
+      },
+      "user_placed": false,
+      "locked": true,
+      "info": {
+        "time_pickup_min": -1,
+        "color": 2,
+        "initial_direction": "East",
+        "missed": 0,
+        "time_delivery_max": -1,
+        "delivered": 0,
+        "time_exchange_max": -1,
+        "capacity": -1,
+        "time_pickup_max": -1,
+        "delay": 0,
+        "picked": 0,
+        "time_delivery_min": -1,
+        "passed": 0,
+        "time_exchange_min": -1,
+        "direction": "West"
+      }
+    },
+    "2001": {
+      "type": "pickup",
+      "category": "pickups",
+      "cell": {
+        "x": 0,
+        "y": 4
+      },
+      "user_placed": false,
+      "locked": true,
+      "info": {
+        "color": 1,
+        "picked": 0,
+        "passed": 0,
+        "type": "Conditional"
+      }
+    },
+    "2002": {
+      "type": "pickup",
+      "category": "pickups",
+      "cell": {
+        "x": 8,
+        "y": 4
+      },
+      "user_placed": false,
+      "locked": true,
+      "info": {
+        "color": 1,
+        "picked": 0,
+        "passed": 0,
+        "type": "Conditional"
+      }
+    },
+    "3001": {
+      "type": "delivery",
+      "category": "deliveries",
+      "cell": {
+        "x": 4,
+        "y": 4
+      },
+      "user_placed": false,
+      "locked": true,
+      "info": {
+        "accepted_types": [
+          "Conditional"
+        ],
+        "color": 0,
+        "missed": 0,
+        "delivered": 0,
+        "passed": 0,
+        "accepted_colors": [],
+        "strict": 0,
+        "consumer": -1,
+        "denominator": 4
+      }
+    }
+  }
+}
