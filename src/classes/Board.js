@@ -34,7 +34,7 @@ class Board {
     return new Promise((resolve, reject) => {
       actions2.forEach(a => {
         const target = {
-          category: "threads",
+          category: a.category,
           id: a.component
         }
         const mutations = [
@@ -43,13 +43,9 @@ class Board {
             value: a.component
           },
           {
-            key: "x",
-            value: a.cell[0]
-          },
-          {
-            key: "y",
-            value: a.cell[1]
-          },
+            key: "cell",
+            value: [a.cell[0], a.cell[1]]
+          }
         ]
         const newAction = new Action(target, mutations)
         this.addAction(newAction)

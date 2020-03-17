@@ -658,6 +658,7 @@
   ],
   "components": {
     "1001": {
+      "_id": "1001",
       "type": "thread",
       "category": "threads",
       "cell": [
@@ -691,6 +692,7 @@
       }
     },
     "1002": {
+      "_id": "1002",
       "type": "thread",
       "category": "threads",
       "cell": [
@@ -724,6 +726,7 @@
       }
     },
     "2001": {
+      "_id": "2001",
       "type": "pickup",
       "category": "pickups",
       "cell": [
@@ -740,6 +743,7 @@
       }
     },
     "2002": {
+      "_id": "2002",
       "type": "pickup",
       "category": "pickups",
       "cell": [
@@ -756,6 +760,7 @@
       }
     },
     "3001": {
+      "_id": "3001",
       "type": "delivery",
       "category": "deliveries",
       "cell": [

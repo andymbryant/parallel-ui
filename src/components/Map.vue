@@ -26,14 +26,14 @@
         </g>
       </g>
       <!-- <transition-group v-for="cat in iconCategories" tag="g" out-in :name="cat" :key="cat"> -->
-      <transition-group v-for="cat in iconCategories" tag="g" out-in name="paths" :class="cat" :key="cat">
+      <transition-group v-for="cat in iconCategories" tag="g" name="paths" :class="cat" :key="cat">
         <path
           v-for="p in mapData[cat]"
-          :key="p.id ? p.id : Math.random()"
+          :key="p._id"
           stroke="black"
           stroke-width="1"
           fill="red"
-          :class="p.id"
+          class="path"
           :transform="`translate(${xScale(p.cell[0])},${yScale(p.cell[1])}), scale(2, 2)`"
           :d="generateIcon(p.type)"
         ></path>
@@ -216,11 +216,8 @@ export default {
   stroke-width: 4
 }
 
-.paths {
-  transition: all 1s;
-  transform: all 1s;
-  stroke: black;
-  stroke-width: 2;
+.path {
+  transition: transform .2s linear;
 }
 
 </style>
