@@ -659,6 +659,7 @@
   "components": {
     "1001": {
       "type": "thread",
+      "category": "threads",
       "cell": [
         2,
         0
@@ -691,6 +692,7 @@
     },
     "1002": {
       "type": "thread",
+      "category": "threads",
       "cell": [
         6,
         0
@@ -723,6 +725,7 @@
     },
     "2001": {
       "type": "pickup",
+      "category": "pickups",
       "cell": [
         0,
         4
@@ -738,6 +741,7 @@
     },
     "2002": {
       "type": "pickup",
+      "category": "pickups",
       "cell": [
         8,
         4
@@ -753,6 +757,7 @@
     },
     "3001": {
       "type": "delivery",
+      "category": "deliveries",
       "cell": [
         4,
         4

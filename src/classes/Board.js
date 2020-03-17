@@ -1,6 +1,7 @@
 import Action from "./Action.js"
 
 import board1 from "../data/board2.json";
+import board2 from "../data/board2.json";
 import actions1 from "../data/actions1.json"
 import actions2 from "../data/actions2.json"
 
@@ -15,7 +16,7 @@ class Board {
 
   fetchBoardData() {
     return new Promise((resolve, reject) => {
-      const {metadata, map, components} = board1
+      const {metadata, map, components} = board2
       this._metadata = metadata
       this._map = map
       this._components = components

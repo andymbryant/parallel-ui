@@ -1,8 +1,8 @@
 <template>
   <div class="level-ctr">
     <TopBar title="Intro to Parallel" :isLevel="true" :levelString="levelString" />
-    <Map :board="board" :mapData="mapData"/>
-    <BotBar :run="run" :terminate="terminate" />
+    <Map v-if="!loading" :board="board" :mapData="mapData"/>
+    <BotBar :run="run"/>
   </div>
 </template>
 
@@ -29,29 +29,16 @@ export default {
       levelString: "",
       loading: false,
       parsing: false,
-      terminated: false,
       mapData: {
         semaphores: {},
-        threads: {
-          "1001": {
-            id: "1001",
-            x: 3,
-            y: 3
-          },
-          "1002": {
-            id: "1002",
-            x: 1,
-            y: 1
-          }
-        }
+        pickups: {},
+        threads: {},
+        deliveries: {}
       },
       board: {}
     }
   },
   methods: {
-    terminate() {
-      this.terminated = true
-    },
     async run(string) {
       let me = this
       this.parsing = true
@@ -61,17 +48,14 @@ export default {
           for (let i = 0; i < me.board.numActions; i++) {
             let nextAction = me.board.nextAction
             setTimeout(function timer() {
-              if (!this.terminated) {
-                me.takeAction(nextAction)
-              } else {
-                return -1
-              }
+              me.takeAction(nextAction)
             }, i * 1000 );
           }
         })
         .catch(err => console.error(err))
     },
     takeAction(action) {
+      console.log(action)
       const {category, id} = action.target
       action.mutations.forEach(mutation => {
         const {key, value} = mutation
@@ -86,11 +70,21 @@ export default {
     }
   },
   created() {
+    this.loading = true
     this.levelString = this.$route.params.level
     this.board = new Board()
     this.board.fetchBoardData()
-      .then(res => console.log('Successful fetch'))
+      .then(() => {
+        const componentKeys = Object.keys(this.board.components)
+        for (let i = 0; i < componentKeys.length; i++) {
+          const id = componentKeys[i]
+          const component = this.board.components[id]
+          const cat = component.category
+          this.mapData[cat][id] = component
+        }
+      })
       .catch(err => console.error(err))
+      .finally(()=> this.loading = false)
   },
 }
 </script>

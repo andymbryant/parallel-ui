@@ -25,25 +25,19 @@
           ></rect>
         </g>
       </g>
-      <transition-group tag="g" out-in name="thread">
-        <!-- <path
-          v-for="(path, i) in paths"
-          :key="'path_'+i"
-          stroke="black"
-          stroke-width="20"
-          class="line"
-          fill="none"
-          :d="line(path)"
-        ></path> -->
+      <!-- <transition-group v-for="cat in iconCategories" tag="g" out-in :name="cat" :key="cat"> -->
+      <transition-group v-if="iconCategories.length" tag="g" out-in name="paths">
+        <g v-for="cat in iconCategories" :key="cat">
         <path
-          v-for="t in threads"
-          :key="t.id"
+          v-for="p in mapData[cat]"
+          :key="p.id"
           stroke="black"
           stroke-width="20"
           class="thread"
-          :transform="`translate(${xScale(t.x)},${yScale(t.y)})`"
+          :transform="`translate(${xScale(p.cell[0])},${yScale(p.cell[1])})`"
           :d="generateIcon(star)"
         ></path>
+        </g>
       </transition-group>
     </svg>
   </div>
@@ -61,6 +55,7 @@ export default {
   data: function() {
     return {
       selections: {},
+      iconCategories: [],
       height: 800,
       width: 900,
     }
@@ -118,6 +113,12 @@ export default {
     threads: function() {
       return this.mapData.threads
     },
+    pickups: function() {
+      return this.mapData.pickups
+    },
+    deliveries: function() {
+      return this.mapData.deliveries
+    },
     generateIcon: function() {
       return d3.symbol()
         .type(d => d)
@@ -167,6 +168,8 @@ export default {
   },
   created() {
     this.levelString = this.$route.params.level
+    this.iconCategories = Object.keys(this.mapData)
+    console.log(this.mapData)
   },
   mounted: function() {
     this.selections.svg = d3.select(this.$el.querySelector("svg"))
@@ -203,7 +206,7 @@ export default {
   stroke-width: 4
 }
 
-.thread {
+.paths {
   transition: all 1s;
   transform: all 1s;
   stroke: black;
